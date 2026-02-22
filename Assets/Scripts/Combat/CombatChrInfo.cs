@@ -39,13 +39,14 @@ public class CombatChrInfo : MonoBehaviour
     public List<Attack> _equipedAttacks;
 
 
-
+    //Køre når programmet starter
     void Start()
     {
         UpdateMaxBarValues();
     }
 
    
+    //kaldet hver frame
     void Update()
     {
         //updatere HP og AP bars 

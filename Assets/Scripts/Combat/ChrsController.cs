@@ -481,13 +481,14 @@ public class ChrsController : MonoBehaviour
         //hvis karakteren er i gang med en animation de ikke kan blokke ud af så sker der ingen ting.
         if (chrObject.GetComponent<AnimationHandler>().Block()) 
         {
-            actuallyBlock(chrObject.GetComponent<CombatChrInfo>()._position);
+            ActuallyBlock(chrObject.GetComponent<CombatChrInfo>()._position);
          
         }
     }
 
-    private void actuallyBlock(int chrPosition)
+    private void ActuallyBlock(int chrPosition)
     {
+        //sætter accuracy af blocking som så går nedaf det ville sige at maks accuacry i dette tilfælde ville være 35.
         Debug.Log("actuallyBlocking");
         blockAccrucyList[chrPosition] = 35;
 

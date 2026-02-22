@@ -125,6 +125,7 @@ public class EnemyAttacks : MonoBehaviour
         }
     }
 
+    //Kalder start laser animation og spawn laser metode 
     public IEnumerator SingleLaser(GameObject targetPosition,float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
@@ -137,6 +138,7 @@ public class EnemyAttacks : MonoBehaviour
         StartCoroutine(SpawnLaser(targetPosition, waitTimeForSpawningLaser, framesToLiveLaser));
     }
 
+    //Kalder spawner en laser for hver karakter.
     public void MultiLaser(List<GameObject> targets)
     {
         Debug.Log("MultiLaser activated!");
@@ -155,6 +157,7 @@ public class EnemyAttacks : MonoBehaviour
 
     }
 
+    //kalder spawn laser flere gange
     public void LasersInRow(List<GameObject> targets,float laserWindowTime,float timeBetweenLasers)
     {
         
@@ -172,6 +175,7 @@ public class EnemyAttacks : MonoBehaviour
         }
     }
 
+    //kalder hit wall animation and transtion camera til siden så spilleren kan se animationen.
     public void HitWall()
     {
         //turn Camera
@@ -180,17 +184,20 @@ public class EnemyAttacks : MonoBehaviour
         _bossAnimator.PlayHitWallAnimation();
     }
 
+    //kalder en courtine til at spawn en rock.
     public void RockFall(GameObject gameObject, float waitTime, int framesToLive, float height)
     {
         StartCoroutine(SpawnRock(gameObject,waitTime,framesToLive,height));
         Debug.Log("spawning rock");
     }
 
+    //kalder en metode til at spille en animtion og hvor lang tid den skal holdes.
     public void TentaclesInGround(float holdTime)
     {
         _bossAnimator.PlaySpikesAnimation(holdTime);
     }
 
+    //dublikere en spike på den valgte lokation.
     public IEnumerator SummonSpike(GameObject targetObject,float waitTime) 
     {
         Debug.Log("summon spike");
@@ -208,6 +215,7 @@ public class EnemyAttacks : MonoBehaviour
         Destroy(spikeSpawned);
     }
     
+    //Spawn en rock over den valgte karakter
     public IEnumerator SpawnRock (GameObject targetObject, float waitTime, int framesToLive, float height) 
     {
         //få transformen af targeted
@@ -224,11 +232,13 @@ public class EnemyAttacks : MonoBehaviour
         GameObject rockspawned = Instantiate(_rockObject,spawnPosition,initialRotation);
         rockspawned.GetComponent<RockBehaviour>().Fall = true;
 
+        //vent i noget tid (indtill stenen er faldet langt nok) og så slet den.
         yield return new WaitForSeconds(framesToLive / 60f);
 
         Destroy(rockspawned);
     }
 
+    //spawner en laser
     private IEnumerator SpawnLaser(GameObject targetObject, float waitTime, int framesToLive)
     {
         yield return new WaitForSeconds(waitTime);
@@ -264,12 +274,13 @@ public class EnemyAttacks : MonoBehaviour
         Destroy(laserInstance);
     }
 
-
+    //kald smoothtranstion (grunden til jeg har den seperatet er fordi jeg havde problemer med at starte en coruotine fra et andet script og havde ikke tid til at finde en løsning)
     public void SmoothTransition(Vector3 targetPosition, float duration, float holdTime)
     {
         StartCoroutine(SmoothTransitionRoutine(targetPosition, duration, holdTime));
     }
 
+    
     private IEnumerator SmoothTransitionRoutine(Vector3 targetPosition, float duration, float holdTime)
     {
         Vector3 startPosition = _camera.transform.position;
