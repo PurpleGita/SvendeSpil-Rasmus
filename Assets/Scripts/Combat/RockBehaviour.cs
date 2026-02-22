@@ -11,9 +11,8 @@ public class RockBehaviour : MonoBehaviour
         rotationSpeed = Random.Range(1f, 5f);
     }
 
-    /// <summary>
+
     /// Called at a fixed interval to update the rock's behavior.
-    /// </summary>
     void FixedUpdate()
     {
         if (Fall)
