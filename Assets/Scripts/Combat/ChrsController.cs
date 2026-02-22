@@ -46,7 +46,7 @@ public class ChrsController : MonoBehaviour
     GameObject _pointObject;
 
     //boolean der fortæller om karaktererne står på deres startposition
-    public bool ChrsInStartPosition;
+    public bool _ChrsInStartPosition;
 
     //liste over hvilke karakterer der skal flyttes
     List<GameObject> ChrsToMove = new List<GameObject>();
@@ -66,24 +66,26 @@ public class ChrsController : MonoBehaviour
     //holder styr på hvor godt de forkselige karaktere blockere
     public List<double> blockAccrucyList = new List<double>() { 0, 0, 0, 0 };
 
+    //siger om spilleren har vundet spillet.
     private bool won = false;
 
-    //update bliver kaldt hver frame
+
+    //Fixedupdate bliver kaldt hver 0.02 sekunder der går og er samme frekvens som Unitys physics engine og bruges derfor til at rykke på ting.
     void FixedUpdate()
     {
         //hvis det er spillerens tur, og karaktererne ikke er i startposition, så flyt dem dertil
         if (isPlayersTurn)
         {
-            if (!ChrsInStartPosition)
+            if (!_ChrsInStartPosition)
             {
-                moveChrsToStartPosition();
+                MoveChrsToStartPosition();
             }
         }
 
         //hvis der er karakterer der skal flyttes, så flyt dem
         if (moveChr)
         {
-            moveChrsToPosition(ChrsToMove, PositionToMove);
+            MoveChrsToPosition(ChrsToMove, PositionToMove);
         }
 
         for (int i = 0; i < blockAccrucyList.Count; i++)
@@ -100,18 +102,20 @@ public class ChrsController : MonoBehaviour
 
     }
 
+    //update bliver kaldt hver frame og bruges derfor til at håndtere input så vi sikre på spillerens touch ikke bliver ignoret.
     private void Update()
     {
         HandleTouchInput();
     }
 
     //metode der flytter en eller flere af karaktererne hen til ønskede positioner
-    private void moveChrsToPosition(List<GameObject> chrsToMove, List<Vector3> position)
+    private void MoveChrsToPosition(List<GameObject> chrsToMove, List<Vector3> position)
     {
+        //gør nedstående for hver karakter
         for (int i = 0; i < chrsToMove.Count; i++)
         {
 
-            //insert check to see if chr has to move more den 0.5f
+            //chekker om karakteren skal bevæge sige
             if (chrsToMove[i].transform.position != position[i])
             {
 
@@ -139,11 +143,13 @@ public class ChrsController : MonoBehaviour
             //hvis denne karaakter er stoppet med at bevæge sig så skift animation til idle
             else
             {
+                //skift karakteren til idle og check om de er såret. (dette var en af de sisdte ting jeg nået og tilføje, derfor det ikke er implementerert så smart)
                 bool _isChrHurt;
                 if (chrsToMove[i].GetComponent<CombatChrInfo>()._currentHealth > 0) 
                 { _isChrHurt = false; }
                 else
                 { _isChrHurt=true; }
+                
                 chrsToMove[i].GetComponent<AnimationHandler>().Idle(_isChrHurt);
 
             }
@@ -155,11 +161,13 @@ public class ChrsController : MonoBehaviour
             //sikker at alle er tilbage til idle animation
             for (int i = 0; i < chrsToMove.Count; i++)
             {
+                //igen check om de såret (dette var en af de sisdte ting jeg nået og tilføje, derfor det ikke er implementerert så smart)
                 bool _isChrHurt;
                 if (chrsToMove[i].GetComponent<CombatChrInfo>()._currentHealth > 0)
                 { _isChrHurt = false; }
                 else
                 { _isChrHurt = true; }
+
                 chrsToMove[i].GetComponent<AnimationHandler>().Idle(_isChrHurt);
 
                 //peg mod modstanderen
@@ -173,7 +181,7 @@ public class ChrsController : MonoBehaviour
     }
 
     //sæt alle karakterer tilbage på deres startposition (bliver kaldt i starten af spillerens tur)
-    private void moveChrsToStartPosition()
+    private void MoveChrsToStartPosition()
     {
         if (!moveChr)
         {
@@ -194,7 +202,7 @@ public class ChrsController : MonoBehaviour
         //hvis ingen karakterer skal flyttes, er alle i position
         if (!moveChr)
         {
-            ChrsInStartPosition = true;
+            _ChrsInStartPosition = true;
 
             //vis UI med angrebsvalg
             EnableAttackOptionsFirstTime();
@@ -208,7 +216,7 @@ public class ChrsController : MonoBehaviour
         {
             if (players[i].transform.position != PositionsToCheck[i])
             {
-                return false; // hvis én position ikke matcher, return false
+                return false; // hvis en position ikke matcher, return false
             }
         }
 
@@ -245,7 +253,7 @@ public class ChrsController : MonoBehaviour
             // Set AP text
             option.GetComponentInChildren<TextMeshProUGUI>().text = $"{attack.APCost}AP";
 
-            // Set color based on AP
+            // Set color basert på om karakteren har nok AP til at bruge den
             option.GetComponent<Image>().color =
                 (attack.APCost > currentTurnsChr._currentAP) ? Color.grey : Color.white;
         }

@@ -181,7 +181,7 @@ public class EnemyPatternBehaviour : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         _chrsController.turnTimer++;
-        _chrsController.ChrsInStartPosition = false;
+        _chrsController._ChrsInStartPosition = false;
         _chrsController.currentTurn = 0;
         _chrsController.isPlayersTurn = true;
 

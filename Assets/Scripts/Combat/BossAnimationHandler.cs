@@ -235,6 +235,7 @@ public class BossAnimationHandler : MonoBehaviour
         }
     }
 
+    //bruger et script der sædder på kamaerert til at ryste kameratet.
     private IEnumerator ScreenShake(float intensity,float duration, float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
