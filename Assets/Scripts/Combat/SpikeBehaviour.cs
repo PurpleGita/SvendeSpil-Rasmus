@@ -20,8 +20,8 @@ public class SpikeBehaviour : MonoBehaviour
 
     // FixedUpdate is called at a fixed interval and is used for physics updates
     // Handles the spike's movement and color changes as it rises and falls.
-    // - Moves the spike up until it reaches a certain height, then marks it as "gone up" and changes its color to red briefly.
-    // - After reaching the top, the spike moves down each frame.
+    // Moves the spike up until it reaches a certain height, then marks it as "gone up" and changes its color to red briefly.
+    // After reaching the top, the spike moves down each frame.
     void FixedUpdate()
     {
         if(goneup == false) { 
@@ -41,7 +41,6 @@ public class SpikeBehaviour : MonoBehaviour
 
     }
     // Coroutine that waits for a specified time before resetting the spike's color to its original value.
-    // <param name="waitTime">Time in seconds to wait before changing the color back.</param>
     private IEnumerator changeColorBack(float waitTime) 
     {
         yield return new WaitForSeconds(waitTime);

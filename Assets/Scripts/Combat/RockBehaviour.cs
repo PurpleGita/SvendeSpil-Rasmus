@@ -12,7 +12,7 @@ public class RockBehaviour : MonoBehaviour
     }
 
 
-    /// Called at a fixed interval to update the rock's behavior.
+    // Called at a fixed interval to update the rock's behavior.
     void FixedUpdate()
     {
         if (Fall)

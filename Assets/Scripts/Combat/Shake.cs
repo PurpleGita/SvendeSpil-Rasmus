@@ -13,7 +13,7 @@ public class Shake : MonoBehaviour
     }
 
 
-    /// Corutine der ryster kamaret.
+    // Corutine der ryster kamaret.
     public IEnumerator ShakingLocal(float duration,float intensity) 
     { 
         Vector3 startPosition = transform.position;
