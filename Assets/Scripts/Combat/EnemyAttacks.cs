@@ -21,7 +21,7 @@ public class EnemyAttacks : MonoBehaviour
     GameObject _spikeObject;
 
     [SerializeField]
-    private Vector2 laserSpawnOffset = Vector2.zero;
+    private Vector2 _laserSpawnOffset = Vector2.zero;
 
     [SerializeField]
     private List<GameObject> _ChrsAbleToTarget;
@@ -38,7 +38,7 @@ public class EnemyAttacks : MonoBehaviour
     private int framesToLiveLaser = 100;
 
     [SerializeField]
-    Light directionalLight;
+    Light _directionalLight;
 
     public float cameraSpeed = 2;
 
@@ -245,8 +245,8 @@ public class EnemyAttacks : MonoBehaviour
 
         // Calculate spawn position with offset
         Vector3 spawnPosition = new Vector3(
-            transform.position.x + laserSpawnOffset.x,
-            transform.position.y + laserSpawnOffset.y,
+            transform.position.x + _laserSpawnOffset.x,
+            transform.position.y + _laserSpawnOffset.y,
             transform.position.z-0.2f // Keep the z-axis the same to avoid misalignment but put it closer to the camera then the boss so it is visable
         );
 
@@ -280,13 +280,13 @@ public class EnemyAttacks : MonoBehaviour
         StartCoroutine(SmoothTransitionRoutine(targetPosition, duration, holdTime));
     }
 
-    
+    //smooth camera transtion til det nye sted.
     private IEnumerator SmoothTransitionRoutine(Vector3 targetPosition, float duration, float holdTime)
     {
         Vector3 startPosition = _camera.transform.position;
         float elapsedTime = 0f;
 
-        // Move to the target position
+        // Ryk til targetPostionen
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
@@ -295,12 +295,10 @@ public class EnemyAttacks : MonoBehaviour
             yield return null;
         }
 
-        //_camera.transform.position = targetPosition;
-
-        // Hold at the target position
+        // Hold i target position
         yield return new WaitForSeconds(holdTime);
 
-        // Move back to the original position
+        // Ryk tilbage det nye sted
         elapsedTime = 0f;
         while (elapsedTime < duration)
         {
@@ -310,16 +308,19 @@ public class EnemyAttacks : MonoBehaviour
             yield return null;
         }
 
+        //sikker på at kameraet er på præcis det rigtige spot.
         _camera.transform.position = startPosition;
     }
 
+    //metode til at skabe en warning før karakteren bliver angrebet.
     public IEnumerator CreateWarning(GameObject targetObject, float waitTime,int intensity) 
     {
         yield return new WaitForSeconds(waitTime);
 
-        // Get the target position
+        // få postionen af karakteren.
         Vector3 spawnPosition = new Vector3(targetObject.transform.position.x, targetObject.transform.position.y + 1.2f,targetObject.transform.position.z);
 
+        //dubliker warning signalet og sæt dens positionen til det tidligere nævnt.
         GameObject warningInstance = Instantiate(_warningObjects[intensity], spawnPosition, Quaternion.identity);
         warningInstance.active = true;
 
@@ -328,6 +329,7 @@ public class EnemyAttacks : MonoBehaviour
         Destroy(warningInstance);
     }
 
+    //skifter lightning rotattionen i scnenen
     public void ChangeLightingTo150()
     {
         if (rotateTo30Coroutine != null) StopCoroutine(rotateTo30Coroutine);
@@ -337,6 +339,7 @@ public class EnemyAttacks : MonoBehaviour
         rotateTo150Coroutine = StartCoroutine(RotateLight(150f));
     }
 
+    //skifter lightning rotattionen i scnenen
     public void ChangeLightingTo30()
     {
         if (rotateTo150Coroutine != null) StopCoroutine(rotateTo150Coroutine);
@@ -345,24 +348,27 @@ public class EnemyAttacks : MonoBehaviour
         rotateTo30Coroutine = StartCoroutine(RotateLight(30f));
     }
 
+    //skifter lightning rotattionen i scnenen
     private IEnumerator RotateLight(float targetXRotation)
     {
-        Quaternion startRotation = directionalLight.transform.rotation;
+        Quaternion startRotation = _directionalLight.transform.rotation;
         Quaternion targetRotation = Quaternion.Euler(targetXRotation, startRotation.eulerAngles.y, startRotation.eulerAngles.z);
 
-        while (Quaternion.Angle(directionalLight.transform.rotation, targetRotation) > 0.1f)
+        while (Quaternion.Angle(_directionalLight.transform.rotation, targetRotation) > 0.1f)
         {
-            directionalLight.transform.rotation = Quaternion.RotateTowards(directionalLight.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            _directionalLight.transform.rotation = Quaternion.RotateTowards(_directionalLight.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             yield return null;
         }
     }
 
+    //Justerer kameraet.
     public void AdjustCamera()
     {
         if (adjustCameraCoroutine != null) StopCoroutine(adjustCameraCoroutine);
         adjustCameraCoroutine = StartCoroutine(RotateAndMoveCamera(11f, 7f));
     }
 
+    //reset kameraet
     public void ResetCamera()
     {
         if (adjustCameraCoroutine != null) StopCoroutine(adjustCameraCoroutine);
@@ -371,6 +377,7 @@ public class EnemyAttacks : MonoBehaviour
         resetCameraCoroutine = StartCoroutine(RotateAndMoveCamera(15f, 8.1f));
     }
 
+    //roterere og bevæger kameraet, bruges i det sidste angreb
     private IEnumerator RotateAndMoveCamera(float targetXRotation, float targetYPosition)
     {
         Quaternion startRotation = _camera.transform.rotation;

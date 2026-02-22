@@ -55,8 +55,6 @@ public class EnemyPatternBehaviour : MonoBehaviour
 
     // Called when the enemy's turn starts. Returns a list of target positions for the current attack pattern.
     // Also triggers the next music track and sets the next attack pattern.
-    // <param name="attackPatternID">The ID of the attack pattern to execute.</param>
-    // <returns>List of Vector3 positions to target.</returns>
     public List<Vector3> EnemyTurnStarted(int attackPatternID)
     {
         List<Vector3> vector3sToReturn = new List<Vector3>();
@@ -130,8 +128,6 @@ public class EnemyPatternBehaviour : MonoBehaviour
     }
 
     // Coroutine that runs the specified attack pattern after an optional wait time.
-    // <param name="attackPatternID">The ID of the attack pattern to execute.</param>
-    // <param name="waitTime">Time in seconds to wait before starting the pattern.</param>
     private IEnumerator RunAttackPattern(int attackPatternID, float waitTime)
     {
         float startTime = Time.unscaledTime;
@@ -175,7 +171,6 @@ public class EnemyPatternBehaviour : MonoBehaviour
 
 
     // Coroutine that ends the enemy's turn after a delay, updates the player controller, and logs the event.
-    // <param name="waitTime">Time in seconds to wait before ending the turn.</param>
     private IEnumerator enemyTurnEnded(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
