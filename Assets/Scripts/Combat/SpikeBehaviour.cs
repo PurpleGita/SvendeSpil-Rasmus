@@ -8,20 +8,13 @@ public class SpikeBehaviour : MonoBehaviour
 
     Color normalColor;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         normalColor = this.GetComponent<SpriteRenderer>().color;
     }
 
-    private void Awake()
-    {
-    }
 
-    // FixedUpdate is called at a fixed interval and is used for physics updates
-    // Handles the spike's movement and color changes as it rises and falls.
-    // Moves the spike up until it reaches a certain height, then marks it as "gone up" and changes its color to red briefly.
-    // After reaching the top, the spike moves down each frame.
+    // Håndtere spike bevægesle og farve
     void FixedUpdate()
     {
         if(goneup == false) { 
@@ -40,7 +33,7 @@ public class SpikeBehaviour : MonoBehaviour
         }
 
     }
-    // Coroutine that waits for a specified time before resetting the spike's color to its original value.
+    // Coroutine der venter lidt tid før den ændre farven tilbage.
     private IEnumerator changeColorBack(float waitTime) 
     {
         yield return new WaitForSeconds(waitTime);
