@@ -48,7 +48,7 @@ public class CombatChrInfo : MonoBehaviour
    
     void Update()
     {
-        //updatere HP og AP bars
+        //updatere HP og AP bars 
         _HPSlider.value = _currentHealth;
         _APSlider.value = _currentAP;
         _HPText.text = _currentHealth.ToString() +"/" + _maxHealth.ToString();

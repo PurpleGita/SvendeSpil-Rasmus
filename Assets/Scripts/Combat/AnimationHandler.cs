@@ -7,6 +7,7 @@ using Unity.Mathematics;
 public class AnimationHandler : MonoBehaviour
 {
     Animator animator;
+    
     float _hurtTime = 0.1f;
 
     [SerializeField]
@@ -14,6 +15,7 @@ public class AnimationHandler : MonoBehaviour
 
     void Start()
     {
+        //tager animationeren på objektet siden der ikke er givet andet logik den skal finde
         animator = GetComponent<Animator>();
         animator.SetFloat("Speed",0);
     }
@@ -55,7 +57,7 @@ public class AnimationHandler : MonoBehaviour
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        // Check if not in "Block" AND not in "Tired"
+        // Chekker at karakteren ikke er i gang med at blokke og ikke trætte efter at prøve at blokke. (så man ikke kan spam blok)
         if (!stateInfo.IsName("Block") && !stateInfo.IsName("Tired"))
         {
 
@@ -80,13 +82,10 @@ public class AnimationHandler : MonoBehaviour
             return true;
         }
         else { return false; }
-
-            
-        
-
-
+           
     }
 
+    //spiller parry animatinonen og skaber et lys hvor det er.
     public IEnumerator ParryAnimation() 
     {
         animator.Play("Parry");
