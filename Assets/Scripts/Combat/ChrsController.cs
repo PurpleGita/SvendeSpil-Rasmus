@@ -229,7 +229,7 @@ public class ChrsController : MonoBehaviour
         _attackOptions.SetActive(true);
 
         //find den karakter der skal angribe og start dens tur
-        passTurn(currentTurn);
+        PassTurn(currentTurn);
     }
 
     //aktiver UI for at vælge angreb
@@ -262,10 +262,10 @@ public class ChrsController : MonoBehaviour
     }
 
     //starter tur for specifik karakter i rækken
-    private void passTurn(int chrPosition)
+    private void PassTurn(int activeChrPosition)
     {
         //hvis alle karakterer har haft tur, giv turen til modstanderen
-        if (chrPosition >= _chrGameObjects.Count)
+        if (activeChrPosition >= _chrGameObjects.Count)
         {
             isPlayersTurn = false;
             RemovePoints(1000);
@@ -284,7 +284,8 @@ public class ChrsController : MonoBehaviour
             {
                 PositionToMove = enemy.GetComponent<EnemyPatternBehaviour>().EnemyTurnStarted(enemyAttackToUse);
             }
-            // here bruger vi ToList() for ikke at assign den direkte liste til ChrsToMove da hvis den bliver cleared senere ville _chrGameObjects også blive cleared
+
+            // her bruger vi ToList() for ikke at assign den direkte liste til ChrsToMove da hvis den bliver cleared senere ville _chrGameObjects også blive cleared
             ChrsToMove = _chrGameObjects.ToList();
             moveChr = true;
 
@@ -294,12 +295,13 @@ public class ChrsController : MonoBehaviour
             //skift karakterens animation til klar (mangler implementering og animationer)
 
             //flyt karakteren frem på skærmen for at gøre klar til at angribe
-            ChrsToMove.Add(_chrGameObjects[chrPosition]);
-            PositionToMove.Add(new Vector3(_chrGameObjects[chrPosition].transform.position.x, _chrGameObjects[chrPosition].transform.position.y, _chrGameObjects[chrPosition].transform.position.z - 1));
+            ChrsToMove.Add(_chrGameObjects[activeChrPosition]);
+            PositionToMove.Add(new Vector3(_chrGameObjects[activeChrPosition].transform.position.x, _chrGameObjects[activeChrPosition].transform.position.y, _chrGameObjects[activeChrPosition].transform.position.z - 1));
 
+            //sige til update at en karakter skal bevæges
             moveChr = true;
 
-            EnableAttackOptions(_chrGameObjects[chrPosition].GetComponent<CombatChrInfo>());
+            EnableAttackOptions(_chrGameObjects[activeChrPosition].GetComponent<CombatChrInfo>());
         }
     }
 
@@ -332,19 +334,22 @@ public class ChrsController : MonoBehaviour
 
     }
 
+    //kaldes når spilleren trykker på vent knappen
     public void WaitPressed() 
     {
         _attackOptions.SetActive(false);
-        _chrGameObjects[currentTurn].GetComponent<CombatChrInfo>()._currentAP += 2;
+        _chrGameObjects[currentTurn].GetComponent<CombatChrInfo>()._currentAP += 4;
         StartCoroutine(HandleEndOfTurn(0));
     }
 
-    //burde være sit eget script i det fulde spil
+    //burde være sit eget script i det fulde spil, men lige nu håndtere angrebs effekter
     private IEnumerator HandleAttackEffects(float waitTime,Attack attack)
     {
         yield return new WaitForSeconds(waitTime);
 
         //udfør angrebseffekt (mangler implementering)
+
+        //finder enemies i scenen
         List<GameObject> Enemies = GameObject.FindGameObjectsWithTag("Enemy").ToList();
 
         //hvis angrebet gør skade så gør den mængde skade til modstanderne
@@ -364,6 +369,7 @@ public class ChrsController : MonoBehaviour
             }
         }
 
+        //hvis angrebet healer så heal.
         if(attack.HPGain > 0) 
         { 
             foreach (GameObject chr in _chrGameObjects)
@@ -376,6 +382,7 @@ public class ChrsController : MonoBehaviour
             }
         }
 
+        //hvis angrebet giver AP så giv AP
         if(attack.APGain > 0) 
         {
             foreach (GameObject chr in _chrGameObjects)
@@ -392,7 +399,7 @@ public class ChrsController : MonoBehaviour
 
     }
 
-
+    //Håndtere når en karakter har angrebet eller ventet og deres tur er over
     private IEnumerator HandleEndOfTurn(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
@@ -400,28 +407,29 @@ public class ChrsController : MonoBehaviour
         //stop attacking
         _chrGameObjects[currentTurn].GetComponent<AnimationHandler>().StopAttack();
 
+        //sikre spilleren ikke kan klikke på ting efter de har vundet.
         if (!won) {
 
-        //move chr back to start posistion
+        //move chr back to start posistion og ryk den næste karakter frem
         ChrsToMove.Add(_chrGameObjects[currentTurn]);
         PositionToMove.Add(_startPos[currentTurn]);
         moveChr = true;
 
         //forøg tur tælleren og start næste tur
         currentTurn++;
-        passTurn(currentTurn);
+        PassTurn(currentTurn);
         }
     }
 
-
+    //håndterer når en karakter er blevet ramt af et angreb.
     public void Attacked(int position,int attackDMG) 
     {
         Debug.Log(position + " is postion attacked out of " + _chrGameObjects.Count);
+
+        //chekker om karakteren er i gang med at blokere hvis ja så tilføj points og giv karakteren AP basseret på hvor godt de timet det.
         if (_chrGameObjects[position].GetComponent<AnimationHandler>().CheckIfBlocking()) 
         {
             int roundedValue = Convert.ToInt32(Math.Round(blockAccrucyList[position]));
-
-
             _chrGameObjects[position].GetComponent<CombatChrInfo>()._currentAP += roundedValue/5;
             StartCoroutine(_chrGameObjects[position].GetComponent<AnimationHandler>().ParryAnimation());
             AddPoints(roundedValue*10);
@@ -430,7 +438,7 @@ public class ChrsController : MonoBehaviour
         }
         else 
         {
-            //hvis angrebet fjern points og hvis karakteren er under 0 liv tager de andre karaktere også skade.
+            //hvis angrebet ramte fjern points og hvis karakteren er under 0 liv tager de andre karaktere også skade. Hvis karakteren er under 0 liv så gør skade til alle karakterer også.
             if(_chrGameObjects[position].GetComponent<CombatChrInfo>()._currentHealth <= 0) 
             {
                 _chrGameObjects[position].GetComponent<AnimationHandler>().Hurt(true);
@@ -447,6 +455,7 @@ public class ChrsController : MonoBehaviour
                 RemovePoints(attackDMG * 100);
             }
 
+            //check om der er nogle karakterer i live hvis ikke så hvis at spilleren har tabt.
             bool isSomeoneAlive = false;
 
             foreach (var chr in _chrGameObjects) 
@@ -466,8 +475,10 @@ public class ChrsController : MonoBehaviour
         
     }
 
-    private void tryToBlock(GameObject chrObject) 
+    //kaldes når en karakter er trykket på og prøver at blokere
+    private void TryToBlock(GameObject chrObject) 
     { 
+        //hvis karakteren er i gang med en animation de ikke kan blokke ud af så sker der ingen ting.
         if (chrObject.GetComponent<AnimationHandler>().Block()) 
         {
             actuallyBlock(chrObject.GetComponent<CombatChrInfo>()._position);
@@ -500,7 +511,7 @@ public class ChrsController : MonoBehaviour
                         if (hit.collider.CompareTag("Chr"))
                         {
                             Debug.Log("Touched: " + hit.collider.gameObject.name);
-                            tryToBlock(hit.collider.gameObject);
+                            TryToBlock(hit.collider.gameObject);
                         }
                     }
                     else
