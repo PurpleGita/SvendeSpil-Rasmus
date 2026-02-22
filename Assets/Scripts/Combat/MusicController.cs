@@ -78,13 +78,13 @@ public class MusicController : MonoBehaviour
         }
     }
 
-    /// Triggers the playback of the next audio clip in the array on the next loop iteration.
+    /// Starter det næste playback af det næste audio clip.
     public void TriggerNextAudio()
     {
         isWaitingForNext = true;
     }
 
-    /// Stops all running coroutines and stops audio playback.
+    /// stopper loop
 
     public void StopLooping()
     {
