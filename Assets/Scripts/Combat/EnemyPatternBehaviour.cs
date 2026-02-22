@@ -18,7 +18,7 @@ public class EnemyPatternBehaviour : MonoBehaviour
     private GameObject _victoryObject;
 
     [SerializeField]
-    private MusicController musicController;
+    private MusicController _musicController;
 
     private int nextAttackPattern = 0;
 
@@ -29,18 +29,18 @@ public class EnemyPatternBehaviour : MonoBehaviour
         enemyAttacks = GetComponent<EnemyAttacks>();
         startPosition = transform.position;
 
-        if (musicController != null)
+        if (_musicController != null)
         {
-            musicController.OnQueuedTrackStarted += OnQueuedTrackStarted;
+            _musicController.OnQueuedTrackStarted += OnQueuedTrackStarted;
         }
     }
 
     // Unsubscriber fra musicontrolleren hvis dette object bliver slettet
     void OnDestroy()
     {
-        if (musicController != null)
+        if (_musicController != null)
         {
-            musicController.OnQueuedTrackStarted -= OnQueuedTrackStarted;
+            _musicController.OnQueuedTrackStarted -= OnQueuedTrackStarted;
         }
     }
 
@@ -68,10 +68,10 @@ public class EnemyPatternBehaviour : MonoBehaviour
                 vector3sToReturn.Add(new Vector3(-6.5f, 2.3f, 15f));      
                 nextAttackPattern = 0;
 
-                if (musicController != null)
+                if (_musicController != null)
                 {
-                    musicController.nextAudioToPlay = 1;
-                    musicController.TriggerNextAudio();
+                    _musicController.nextAudioToPlay = 1;
+                    _musicController.TriggerNextAudio();
                 }
                 break;
 
@@ -83,10 +83,10 @@ public class EnemyPatternBehaviour : MonoBehaviour
 
                 nextAttackPattern = 1;
 
-                if (musicController != null)
+                if (_musicController != null)
                 {
-                    musicController.nextAudioToPlay = 2;
-                    musicController.TriggerNextAudio();
+                    _musicController.nextAudioToPlay = 2;
+                    _musicController.TriggerNextAudio();
                 }
 
                 break;
@@ -100,10 +100,10 @@ public class EnemyPatternBehaviour : MonoBehaviour
 
                 nextAttackPattern = 2;
 
-                if (musicController != null)
+                if (_musicController != null)
                 {
-                    musicController.nextAudioToPlay = 3;
-                    musicController.TriggerNextAudio();
+                    _musicController.nextAudioToPlay = 3;
+                    _musicController.TriggerNextAudio();
                 }
 
 
@@ -116,10 +116,10 @@ public class EnemyPatternBehaviour : MonoBehaviour
                 vector3sToReturn.Add(new Vector3(-6.5f, 2.3f, 15f));
 
                 nextAttackPattern = 3;
-                if (musicController != null)
+                if (_musicController != null)
                 {
-                    musicController.nextAudioToPlay = 4;
-                    musicController.TriggerNextAudio();
+                    _musicController.nextAudioToPlay = 4;
+                    _musicController.TriggerNextAudio();
                 }
                 break;
         }

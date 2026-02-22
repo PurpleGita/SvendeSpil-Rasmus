@@ -15,7 +15,7 @@ public class MusicController : MonoBehaviour
     // event til at sige når den næste queued starter med at spille
     public event Action OnQueuedTrackStarted;
 
-    /// Initializes the audio system by preloading the first clip and starting the playback loop if audio clips and source are set.
+    /// Initializerer audio systemet ved at preload det første klip.
     void Start()
     {
         if (audioClips.Length > 0 && audioSource != null)
@@ -27,7 +27,7 @@ public class MusicController : MonoBehaviour
     }
 
 
-    /// Preloads the given audio clip into the AudioSource to minimize playback delay.
+    /// Preloader et klip ved at starte det og stoppe det med det samme.
     void PreloadClip(AudioClip clip)
     {
         audioSource.clip = clip;
@@ -35,8 +35,8 @@ public class MusicController : MonoBehaviour
         audioSource.Stop();
     }
 
-    /// Coroutine that continuously schedules and plays audio clips in a loop.
-    /// Handles switching to a different track when triggered and invokes an event when a queued track starts.
+    /// Coroutine der scheduler og spiller audio clips i loop.
+    /// Invoker et event queued track starter.
     IEnumerator PlayLoop()
     {
         while (true)
