@@ -18,6 +18,7 @@ public class MusicController : MonoBehaviour
     // Initializerer audio systemet ved at preload det første klip.
     void Start()
     {
+        // Tjekker at vi faktisk har clips og en AudioSource
         if (audioClips.Length > 0 && audioSource != null)
         {
             PreloadClip(audioClips[0]);
@@ -27,7 +28,7 @@ public class MusicController : MonoBehaviour
     }
 
 
-    // Preloader et klip ved at starte det og stoppe det med det samme.
+    // Preloader et klip ved at starte det og stoppe det med det samme. Dette tvinger Unity til at indlæse klippet i memory,
     void PreloadClip(AudioClip clip)
     {
         audioSource.clip = clip;
@@ -39,24 +40,33 @@ public class MusicController : MonoBehaviour
     // Invoker et event queued track starter.
     IEnumerator PlayLoop()
     {
+        // Kører uendeligt indtil StopAllCoroutines bliver kaldt
         while (true)
         {
+            // Hvis vi har bedt om at spille næste track (via TriggerNextAudio)
+            // og vi har mere end ét klip,
+            // og vi endnu ikke har spillet det alternative track
             if (isWaitingForNext && audioClips.Length > 1 && !hasPlayedDifferentTrack)
             {
+                // Skifter til det klip der er queued
                 currentClipIndex = nextAudioToPlay;
                 hasPlayedDifferentTrack = true;
             }
             else
             {
+                // Ellers fallback til default (main sang loopet)
                 currentClipIndex = 0;
             }
 
+            // Henter det klip der skal afspilles i denne iteration
             AudioClip clipToPlay = audioClips[currentClipIndex];
             audioSource.clip = clipToPlay;
+
+            // Planlægger præcist hvornår klippet skal starte
             audioSource.PlayScheduled(nextStartTime);
             nextStartTime = AudioSettings.dspTime + clipToPlay.length;
 
-            // Notify alle der er subscribet til eventet når en ny sang begynder at en ny sang er startet.
+            // Hvis vi er i gang med et queued track, Notify alle der er subscribet til eventet at en ny sang er startet. 
             if (isWaitingForNext)
             {
                 OnQueuedTrackStarted?.Invoke();
@@ -65,11 +75,14 @@ public class MusicController : MonoBehaviour
             //gemmer hvor langt tid det tager før dette lydKlip er færdigt.
             double waitUntil = nextStartTime;
 
+            // Venter frame-for-frame indtil DSP-tiden når slutningen.
+            // yield return null betyder: vent én frame og fortsæt.
             while (AudioSettings.dspTime < waitUntil)
             {
                 yield return null;
             }
 
+            // Hvis vi spillede et alternativt klip (index > 0), så gå tilbage til main loopet.
             if (currentClipIndex > 0)
             {
                 isWaitingForNext = false;

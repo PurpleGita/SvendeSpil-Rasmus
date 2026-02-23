@@ -44,8 +44,8 @@ public class EnemyPatternBehaviour : MonoBehaviour
         }
     }
 
-    // Called when the queued music track starts playing.
-    // Begins the next attack pattern coroutine.
+    // Kaldet når den næste queued music klip spiller
+    // Begynder den næste attackPattern
     private void OnQueuedTrackStarted()
     {
         Debug.Log("Queued track started playing.");
@@ -53,8 +53,8 @@ public class EnemyPatternBehaviour : MonoBehaviour
         Debug.Log("attack Pattern " + nextAttackPattern);
     }
 
-    // Called when the enemy's turn starts. Returns a list of target positions for the current attack pattern.
-    // Also triggers the next music track and sets the next attack pattern.
+    // Kaldet når en modstanderss tur starter. Returner en list af postioner for hvad der skal angrebes.
+    // Sætter også den næste music klip og sætter den næste attack pattern.
     public List<Vector3> EnemyTurnStarted(int attackPatternID)
     {
         List<Vector3> vector3sToReturn = new List<Vector3>();
@@ -127,12 +127,12 @@ public class EnemyPatternBehaviour : MonoBehaviour
         return vector3sToReturn;
     }
 
-    // Coroutine that runs the specified attack pattern after an optional wait time.
+    // Corutine der køre den valgte attack pattern efter en spefick vente tid.
     private IEnumerator RunAttackPattern(int attackPatternID, float waitTime)
     {
         float startTime = Time.unscaledTime;
 
-        // Initial delay
+        // Vente tid.
         while (Time.unscaledTime < startTime + waitTime)
         {
             yield return null;
@@ -170,7 +170,7 @@ public class EnemyPatternBehaviour : MonoBehaviour
 
 
 
-    // Coroutine that ends the enemy's turn after a delay, updates the player controller, and logs the event.
+    // Coroutine der slutter modstanderns tur og opdaterer player controlleren så den ved det spillerens tur.
     private IEnumerator enemyTurnEnded(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
