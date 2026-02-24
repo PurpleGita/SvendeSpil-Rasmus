@@ -1475,7 +1475,7 @@ MonoBehaviour:
   _attackOption3: {fileID: 1109233557}
   _loseObject: {fileID: 2103447052}
   _pointObject: {fileID: 1682562703}
-  ChrsInStartPosition: 0
+  _ChrsInStartPosition: 0
   currentTurn: 0
   turnTimer: 0
   blockAccrucyList:
@@ -4447,7 +4447,7 @@ MonoBehaviour:
   _laserObject: {fileID: 401756804}
   _rockObject: {fileID: 1648233344}
   _spikeObject: {fileID: 1986295781}
-  laserSpawnOffset: {x: -0.4, y: 2.9}
+  _laserSpawnOffset: {x: 0, y: 0}
   _ChrsAbleToTarget:
   - {fileID: 492770092}
   - {fileID: 1136176632}
@@ -4459,7 +4459,7 @@ MonoBehaviour:
   - {fileID: 1055349434}
   - {fileID: 1870294318}
   - {fileID: 1913015819}
-  directionalLight: {fileID: 1371540883}
+  _directionalLight: {fileID: 0}
   cameraSpeed: 2
   rotationSpeed: 15
 --- !u!114 &894187336
@@ -4481,7 +4481,7 @@ MonoBehaviour:
   - {fileID: 1764130402}
   - {fileID: 2075178597}
   _victoryObject: {fileID: 173381164}
-  musicController: {fileID: 247581272}
+  _musicController: {fileID: 0}
 --- !u!114 &933658295 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7414690119073750783, guid: f881ad22b94c7d74cb7024826092187e, type: 3}
@@ -7793,36 +7793,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74189ec74efd2a14eb8cf0e2f59aa164, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curve:
+  _curve:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.102574736
-      value: 0.084429935
-      inSlope: 0.9172293
-      outSlope: 0.9172293
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -0.09408018
-      outSlope: -0.09408018
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -11305,7 +11278,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: eed07a63fb561ef4ca414ca5fd83838a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 40bb151b12644cb4684c80034e94ddfb, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
