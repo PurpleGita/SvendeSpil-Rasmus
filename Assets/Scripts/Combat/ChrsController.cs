@@ -267,6 +267,7 @@ public class ChrsController : MonoBehaviour
         //hvis alle karakterer har haft tur, giv turen til modstanderen
         if (activeChrPosition >= _chrGameObjects.Count)
         {
+            Debug.Log("enemy turn");
             isPlayersTurn = false;
             RemovePoints(1000);
 
@@ -279,6 +280,7 @@ public class ChrsController : MonoBehaviour
                 enemyAttackToUse = rand.Next(0, 3);
             }
 
+            
 
             foreach (GameObject enemy in Enemies)
             {

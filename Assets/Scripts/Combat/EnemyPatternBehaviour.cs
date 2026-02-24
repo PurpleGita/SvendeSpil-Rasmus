@@ -59,6 +59,8 @@ public class EnemyPatternBehaviour : MonoBehaviour
     {
         List<Vector3> vector3sToReturn = new List<Vector3>();
 
+        Debug.Log("enemy uses it's " + attackPatternID + " attack");
+
         switch (attackPatternID)
         {
             case 0:

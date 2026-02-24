@@ -4447,7 +4447,7 @@ MonoBehaviour:
   _laserObject: {fileID: 401756804}
   _rockObject: {fileID: 1648233344}
   _spikeObject: {fileID: 1986295781}
-  _laserSpawnOffset: {x: 0, y: 0}
+  _laserSpawnOffset: {x: -0.4, y: 2.9}
   _ChrsAbleToTarget:
   - {fileID: 492770092}
   - {fileID: 1136176632}
@@ -4459,7 +4459,7 @@ MonoBehaviour:
   - {fileID: 1055349434}
   - {fileID: 1870294318}
   - {fileID: 1913015819}
-  _directionalLight: {fileID: 0}
+  _directionalLight: {fileID: 1371540883}
   cameraSpeed: 2
   rotationSpeed: 15
 --- !u!114 &894187336
@@ -4481,7 +4481,7 @@ MonoBehaviour:
   - {fileID: 1764130402}
   - {fileID: 2075178597}
   _victoryObject: {fileID: 173381164}
-  _musicController: {fileID: 0}
+  _musicController: {fileID: 247581272}
 --- !u!114 &933658295 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7414690119073750783, guid: f881ad22b94c7d74cb7024826092187e, type: 3}
@@ -7795,7 +7795,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _curve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.7984222
+      value: -0.0017974447
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
