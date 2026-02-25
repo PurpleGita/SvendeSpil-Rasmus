@@ -69,7 +69,6 @@ public class ChrsController : MonoBehaviour
     //siger om spilleren har vundet spillet.
     private bool won = false;
 
-
     //Fixedupdate bliver kaldt hver 0.02 sekunder der går og er samme frekvens som Unitys physics engine og bruges derfor til at rykke på ting.
     void FixedUpdate()
     {
@@ -348,8 +347,6 @@ public class ChrsController : MonoBehaviour
     private IEnumerator HandleAttackEffects(float waitTime,Attack attack)
     {
         yield return new WaitForSeconds(waitTime);
-
-        //udfør angrebseffekt (mangler implementering)
 
         //finder enemies i scenen
         List<GameObject> Enemies = GameObject.FindGameObjectsWithTag("Enemy").ToList();
