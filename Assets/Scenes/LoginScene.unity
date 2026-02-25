@@ -574,7 +574,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &477369220
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1723,6 +1723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5067c9c0edb54e41807acfe4dd26cd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _highScoreObject: {fileID: 0}
 --- !u!4 &1119722867
 Transform:
   m_ObjectHideFlags: 0
@@ -2746,8 +2747,8 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0

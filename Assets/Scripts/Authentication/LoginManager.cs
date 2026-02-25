@@ -98,7 +98,9 @@ public class LoginManager : MonoBehaviour
             }
             else
             {
-                feedbackText.text = "Login failed:" + request.downloadHandler.text;
+                LoginResponseData error = JsonUtility.FromJson<LoginResponseData>(request.downloadHandler.text);
+
+                feedbackText.text = "Login failed: " + error.message;
                 Debug.LogError("Error: " + request.error);
                 Debug.LogError("Response Code: " + request.responseCode);
                 Debug.LogError("Response: " + request.downloadHandler.text);
@@ -161,6 +163,7 @@ public class LoginManager : MonoBehaviour
         public string accessToken;
         public string refreshToken;
         public int expiresIn;
+        public string message;
     }
 
     [System.Serializable]
